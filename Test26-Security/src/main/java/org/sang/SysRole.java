@@ -3,12 +3,13 @@ package org.sang;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Created by sang on 2017/1/10.
  */
 @Entity
-public class SysRole {
+public class SysRole implements Serializable{
     @Id
     @GeneratedValue
     private Long id;

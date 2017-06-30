@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -13,6 +14,8 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @EnableRedisHttpSession
 public class Config {
+
+    private static JedisPool jedisPool;
     @Value("${spring.redis.host}")
     private String host;
     @Value("${spring.redis.password}")
@@ -101,6 +104,11 @@ public class Config {
         poolConfig.setMaxWaitMillis(this.maxWait);
         poolConfig.setMaxIdle(this.maxIdle);
         poolConfig.setMinIdle(this.minIdle);
+        if((password.trim()).equals("")){
+            jedisPool = new JedisPool(poolConfig,host,port,timeout);
+        }else{
+            jedisPool = new JedisPool(poolConfig,host,port,timeout,password);
+        }
         return poolConfig;
     }
 
